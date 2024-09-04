@@ -100,11 +100,8 @@
   background-color: rgb(230, 234, 248);
   color: rgb(86, 99, 134);
 }
-.choice-sentenceWord:visited {
-  background-color: rgb(27, 76, 255);
-  color: rgb(242, 246, 255);
-}
-.choice-sentenceWord:active {
+/* 단어 한번 클릭했을 때 적용할 스타일 */
+.choice-sentenceWord.active {
   background-color: rgb(27, 76, 255);
   color: rgb(242, 246, 255);
 }

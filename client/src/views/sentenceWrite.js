@@ -2,6 +2,15 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const SentenceWrite = () => {
+  //선택된 단어 디자인 바꾸기
+  let [selected, setSelected] = useState([]);
+  const changeWordDesign = (idx) => {
+    if (selected[idx] === false) {
+      let copy = [...selected];
+      copy[idx] = true;
+      setSelected(copy);
+    }
+  };
   // 문장들은 db에서 가져오기
   const [korSentence, setKorSentence] = useState('');
   const [engSentence, setEngSentence] = useState([]);
@@ -18,11 +27,17 @@ const SentenceWrite = () => {
         setKorSentence(sentences.kor);
         setEngSentence(sentences.eng);
         setEngSentenceAns(sentences.engAnswer);
+        //selected에도 넣기 => 각각 선택된 상태를 저장하기위해
+        let falseArr = sentences.eng.map((elm) => {
+          return (elm = false);
+        });
+        setSelected(falseArr);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
+
   return (
     <div className='write-background'>
       <div className='question-background'>
@@ -98,7 +113,15 @@ const SentenceWrite = () => {
           {engSentence
             ? engSentence.map((elm, idx) => {
                 return (
-                  <div key={idx} className='choice-sentenceWord'>
+                  <div
+                    key={idx}
+                    className={`choice-sentenceWord ${
+                      selected[idx] ? 'active' : ''
+                    }`}
+                    onClick={() => {
+                      changeWordDesign(idx);
+                    }}
+                  >
                     {elm}
                   </div>
                 );
