@@ -12,6 +12,8 @@ const SentenceWrite = () => {
       setSelected(copy);
     }
   };
+  //성공 컴포넌트를 켤지 정할 state
+  const [suceess, setSuccess] = useState(false);
   // 문장들은 db에서 가져오기
   const [korSentence, setKorSentence] = useState('');
   const [engSentence, setEngSentence] = useState([]);
@@ -28,6 +30,7 @@ const SentenceWrite = () => {
         setKorSentence(sentences.kor);
         setEngSentence(sentences.eng);
         setEngSentenceAns(sentences.engAnswer);
+
         //selected에도 넣기 => 각각 선택된 상태를 저장하기위해
         let falseArr = sentences.eng.map((elm) => {
           return (elm = false);
@@ -42,7 +45,7 @@ const SentenceWrite = () => {
 
   //선택한 영어단어 화면에 순서대로 표시하기
   let [word, setWord] = useState([]);
-  let [tureWords, setTrueWords] = useState(0); //0은 평시, 1은 맞았을 때, 2는 틀렸을 때
+  let [tureWords, setTrueWords] = useState(0); //0은 평시, 1은 맞았을 때, 2는 틀렸을 때 이펙트
   const writeWord = (elm) => {
     let wordCopy = [...word];
     //이미 같은 요소있는지 확인
@@ -63,13 +66,7 @@ const SentenceWrite = () => {
       }
     }
   };
-  //성공 컴포넌트
-  const SuccessSentence = () => {
-    let [engFullSentence, setEngFullSentence] = useState(
-      engSentenceAns.join(' ')
-    );
-    return <div className={`successSen`}>{engFullSentence}</div>;
-  };
+
   //흔드는 애니메이션 상태
   let [vibeState, setVibeState] = useState(false);
   //단어 배열 상태에 따라 정답처리 및 오답처리
@@ -78,6 +75,7 @@ const SentenceWrite = () => {
       return;
     } else if (tureWords === 1) {
       //성공 컴포넌트 띄우기
+      setSuccess(true);
     } else if (tureWords === 2) {
       //다시 하게끔
       setVibeState(true); //바이브레이션 주고
@@ -96,6 +94,14 @@ const SentenceWrite = () => {
     setSelected(selCopy);
     setTrueWords(0);
     setWord([]);
+  };
+
+  //성공 컴포넌트
+  const SuccessSentence = () => {
+    let [engFullSentence, setEngFullSentence] = useState(
+      engSentenceAns.join(' ')
+    );
+    return <div className={`successSen`}>{engFullSentence}</div>;
   };
 
   return (
@@ -165,25 +171,12 @@ const SentenceWrite = () => {
           </span>
         </div>
 
-        <div className='answer-sentence'>
-          <div className='delBtn' style={{ visibility: 'hidden' }}>
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              width='24'
-              height='24'
-              viewBox='0 0 24 24'
-              fill='none'
-            >
-              <path
-                fillRule='evenodd'
-                clipRule='evenodd'
-                d='M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22ZM8.29289 8.29289C8.68342 7.90237 9.31658 7.90237 9.70711 8.29289L12 10.5858L14.2929 8.29289C14.6834 7.90237 15.3166 7.90237 15.7071 8.29289C16.0976 8.68342 16.0976 9.31658 15.7071 9.70711L13.4142 12L15.7071 14.2929C16.0976 14.6834 16.0976 15.3166 15.7071 15.7071C15.3166 16.0976 14.6834 16.0976 14.2929 15.7071L12 13.4142L9.70711 15.7071C9.31658 16.0976 8.68342 16.0976 8.29289 15.7071C7.90237 15.3166 7.90237 14.6834 8.29289 14.2929L10.5858 12L8.29289 9.70711C7.90237 9.31658 7.90237 8.68342 8.29289 8.29289Z'
-                fill='rgb(52, 52, 70)'
-              />
-            </svg>
-          </div>
-          {engSentence
-            ? engSentence.map((elm, idx) => {
+        <div className='answer-sentencePart'>
+          <div className='answer-sentence'>
+            {suceess ? (
+              <SuccessSentence></SuccessSentence>
+            ) : (
+              engSentence.map((elm, idx) => {
                 return (
                   <div
                     key={idx}
@@ -195,8 +188,8 @@ const SentenceWrite = () => {
                   </div>
                 );
               })
-            : null}
-          <SuccessSentence></SuccessSentence>
+            )}
+          </div>
           <div className='delBtn' onClick={deleteWords}>
             <svg
               xmlns='http://www.w3.org/2000/svg'

@@ -64,9 +64,15 @@
   font-optical-sizing: auto;
   font-size: 4vh;
 }
-.answer-sentence {
+.answer-sentencePart {
   position: relative;
   bottom: 10vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.answer-sentence {
+  position: relative;
   display: flex;
   flex-direction: row;
 }
@@ -141,12 +147,10 @@
   justify-content: center;
   align-items: center;
   position: relative;
-  top: -1vh;
-  /* background-color: rgb(52, 52, 70); */
+  bottom: -3vh;
+  width: 2vw;
   background-color: rgb(241, 244, 251);
   padding: 0.4vh 0.6vw;
-  margin-right: 0.5vw;
-  margin-left: 0.5vw;
   border-radius: 7px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1), 0 1px 4px rgba(0, 0, 0, 0.2);
   cursor: pointer;
