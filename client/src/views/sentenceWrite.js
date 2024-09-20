@@ -13,7 +13,7 @@ const SentenceWrite = () => {
     }
   };
   //성공 컴포넌트를 켤지 정할 state
-  const [suceess, setSuccess] = useState(false);
+  const [success, setSuccess] = useState(false);
   // 문장들은 db에서 가져오기
   const [korSentence, setKorSentence] = useState('');
   const [engSentence, setEngSentence] = useState([]);
@@ -66,16 +66,19 @@ const SentenceWrite = () => {
       }
     }
   };
-
   //흔드는 애니메이션 상태
-  let [vibeState, setVibeState] = useState(false);
+  const [vibeState, setVibeState] = useState(false);
+  //파란 정답처리
+  const [blueDes, setBlueDes] = useState(false);
   //단어 배열 상태에 따라 정답처리 및 오답처리
   useEffect(() => {
     if (tureWords === 0) {
       return;
     } else if (tureWords === 1) {
-      //성공 컴포넌트 띄우기
-      setSuccess(true);
+      //성공 컴포넌트 띄우기 => setTimeout함수로 성공 컴포넌트를 띄우기 전 시간을 조금 준다
+      setTimeout(() => {
+        setSuccess(true);
+      }, 300);
     } else if (tureWords === 2) {
       //다시 하게끔
       setVibeState(true); //바이브레이션 주고
@@ -101,7 +104,16 @@ const SentenceWrite = () => {
     let [engFullSentence, setEngFullSentence] = useState(
       engSentenceAns.join(' ')
     );
-    return <div className={`successSen`}>{engFullSentence}</div>;
+    const [pop, setPop] = useState('');
+    useEffect(() => {
+      setTimeout(() => {
+        setPop('successSen');
+      }, 100);
+      return () => {
+        setPop('');
+      };
+    }, []);
+    return <div className={`unselected ` + pop}>{engFullSentence}</div>;
   };
 
   return (
@@ -173,8 +185,8 @@ const SentenceWrite = () => {
 
         <div className='answer-sentencePart'>
           <div className='answer-sentence'>
-            {suceess ? (
-              <SuccessSentence></SuccessSentence>
+            {success ? (
+              <SuccessSentence />
             ) : (
               engSentence.map((elm, idx) => {
                 return (
@@ -190,22 +202,24 @@ const SentenceWrite = () => {
               })
             )}
           </div>
-          <div className='delBtn' onClick={deleteWords}>
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              width='24'
-              height='24'
-              viewBox='0 0 24 24'
-              fill='none'
-            >
-              <path
-                fillRule='evenodd'
-                clipRule='evenodd'
-                d='M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22ZM8.29289 8.29289C8.68342 7.90237 9.31658 7.90237 9.70711 8.29289L12 10.5858L14.2929 8.29289C14.6834 7.90237 15.3166 7.90237 15.7071 8.29289C16.0976 8.68342 16.0976 9.31658 15.7071 9.70711L13.4142 12L15.7071 14.2929C16.0976 14.6834 16.0976 15.3166 15.7071 15.7071C15.3166 16.0976 14.6834 16.0976 14.2929 15.7071L12 13.4142L9.70711 15.7071C9.31658 16.0976 8.68342 16.0976 8.29289 15.7071C7.90237 15.3166 7.90237 14.6834 8.29289 14.2929L10.5858 12L8.29289 9.70711C7.90237 9.31658 7.90237 8.68342 8.29289 8.29289Z'
-                fill='rgb(52, 52, 70)'
-              />
-            </svg>
-          </div>
+          {success ? null : (
+            <div className='delBtn' onClick={deleteWords}>
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                width='24'
+                height='24'
+                viewBox='0 0 24 24'
+                fill='none'
+              >
+                <path
+                  fillRule='evenodd'
+                  clipRule='evenodd'
+                  d='M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22ZM8.29289 8.29289C8.68342 7.90237 9.31658 7.90237 9.70711 8.29289L12 10.5858L14.2929 8.29289C14.6834 7.90237 15.3166 7.90237 15.7071 8.29289C16.0976 8.68342 16.0976 9.31658 15.7071 9.70711L13.4142 12L15.7071 14.2929C16.0976 14.6834 16.0976 15.3166 15.7071 15.7071C15.3166 16.0976 14.6834 16.0976 14.2929 15.7071L12 13.4142L9.70711 15.7071C9.31658 16.0976 8.68342 16.0976 8.29289 15.7071C7.90237 15.3166 7.90237 14.6834 8.29289 14.2929L10.5858 12L8.29289 9.70711C7.90237 9.31658 7.90237 8.68342 8.29289 8.29289Z'
+                  fill='rgb(52, 52, 70)'
+                />
+              </svg>
+            </div>
+          )}
         </div>
         <div className='choice-sentence'>
           {engSentence

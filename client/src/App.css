@@ -166,6 +166,9 @@
   margin-bottom: -2px;
 }
 /* 성공 컴포넌트 */
+.unselected {
+  transform: scale(0);
+}
 .successSen {
   display: flex;
   justify-content: center;
@@ -175,4 +178,6 @@
   font-optical-sizing: auto;
   font-weight: 500;
   font-size: 3vh;
+  transform: scale(100%);
+  transition: 0.3s;
 }
