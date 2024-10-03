@@ -11,7 +11,7 @@
 .question-background {
   width: 94vw;
   height: 90vh;
-  background-color: rgb(246, 246, 246);
+  background-color: rgb(248, 248, 248);
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
   display: flex;
   justify-content: center;
@@ -149,7 +149,7 @@
   position: relative;
   bottom: -3vh;
   width: 2vw;
-  background-color: rgb(241, 244, 251);
+  background-color: white;
   padding: 0.4vh 0.6vw;
   border-radius: 7px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1), 0 1px 4px rgba(0, 0, 0, 0.2);
@@ -178,6 +178,7 @@
   font-optical-sizing: auto;
   font-weight: 500;
   font-size: 3vh;
+  color: rgb(0, 0, 170);
   transform: scale(100%);
   transition: 0.3s;
 }

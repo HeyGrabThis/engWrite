@@ -1,10 +1,25 @@
 const express = require('express');
 const app = express();
-const PORT = 5000;
+require('dotenv').config();
+const PORT = process.env.PORT;
 
-app.listen(PORT, () => {
-  console.log('http://localhost:5000 에서 서버 실행중');
-});
+const { MongoClient } = require('mongodb');
+
+let db;
+const url = process.env.DB_URL;
+new MongoClient(url)
+  .connect()
+  .then((client) => {
+    console.log('DB연결성공');
+    db = client.db('sentences');
+
+    app.listen(PORT, () => {
+      console.log('http://localhost:5000 에서 서버 실행중');
+    });
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 //접근한 페이지에 따라 한글과 영어 문장 찢어서 보내기
 app.get('/api/sentences', (req, res) => {
