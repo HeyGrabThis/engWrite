@@ -11,7 +11,7 @@ new MongoClient(url)
   .connect()
   .then((client) => {
     console.log('DB연결성공');
-    db = client.db('sentences');
+    db = client.db('eng_write');
 
     app.listen(PORT, () => {
       console.log('http://localhost:5000 에서 서버 실행중');
@@ -21,43 +21,56 @@ new MongoClient(url)
     console.log(err);
   });
 
-//접근한 페이지에 따라 한글과 영어 문장 찢어서 보내기
-app.get('/api/sentences', (req, res) => {
-  //db에 접근해서 한글문장 영어문장 가져오기
-  //
-  //
-  const dbSentences = {
-    kor: '당신의 가방에 무엇이 들었나요?',
-    eng: "What's in your bag?",
-  };
-  //db에서 가져온 데이터중 영어 문장을 띄어쓰기로 나눠서 배열로 담기
-  const engSpt = dbSentences.eng.split(' ');
-  //engSpt에 담긴 요소를 무작위로 섞기위한 함수
-  const shuffle = (array) => {
-    let arrSff = [...array];
-    for (let i = arrSff.length - 1; i > 0; i--) {
-      let j = Math.floor(Math.random() * (i + 1));
-      [arrSff[i], arrSff[j]] = [arrSff[j], arrSff[i]];
-    }
-    //섞은 것과 원래 것이 같으면 다시 섞기
-    if (arrSff === array) {
-      for (let i = arrSff.length - 1; i > 0; i--) {
-        let j = Math.floor(Math.random() * (i + 1));
-        [arrSff[i], arrSff[j]] = [arrSff[j], arrSff[i]];
-      }
-    }
-    return arrSff;
-  };
-  //섞기
-  const engSptSff = shuffle(engSpt);
+// 현재 문장 인덱스를 저장할 변수
+let currentSentenceIndex = 0;
 
-  const sentences = {
-    kor: '당신의 가방에 무엇이 들었나요?',
-    eng: engSptSff,
-    engAnswer: engSpt,
-  };
-  res.send(sentences);
+app.get('/api/sentences', async (req, res) => {
+  try {
+    // DB에서 코스 데이터 가져오기
+    const course = await db
+      .collection('kor_eng_course')
+      .findOne({ title: 'basic' });
+
+    if (!course || !course.contents.length) {
+      console.log('데이터가 없습니다');
+      return res.status(404).send('데이터가 없습니다');
+    }
+
+    // 현재 인덱스의 문장 가져오기
+    const currentSentence = course.contents[currentSentenceIndex];
+
+    // 다음 문장을 위해 인덱스 증가
+    currentSentenceIndex = (currentSentenceIndex + 1) % course.contents.length;
+
+    // 영어 문장 분리 및 섞기
+    const engSpt = currentSentence.eng.split(' ');
+    const engSptSff = shuffle(engSpt);
+
+    const sentences = {
+      kor: currentSentence.kor,
+      eng: engSptSff,
+      engAnswer: engSpt,
+    };
+    console.log(sentences);
+    res.send(sentences);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('서버 에러');
+  }
 });
+
+// 배열을 섞는 함수
+const shuffle = (array) => {
+  let arrSff = [...array];
+  for (let i = arrSff.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    [arrSff[i], arrSff[j]] = [arrSff[j], arrSff[i]];
+  }
+  if (JSON.stringify(arrSff) === JSON.stringify(array)) {
+    return shuffle(array);
+  }
+  return arrSff;
+};
 
 app.get('/', (req, res) => {
   res.send('반갑다');

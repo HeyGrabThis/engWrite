@@ -55,8 +55,8 @@ const SentenceWrite = () => {
     }
     wordCopy.push(elm);
     setWord(wordCopy);
-    //4번째 값이 있을 때
-    if (wordCopy[3]) {
+    //wordCopy의 길이가 정답 배열의 길이와 같으면 정답 확인 단계 진행
+    if (wordCopy.length === engSentenceAns.length) {
       //정답과 같으면 trueWords의 상태 1로 변경
       if (JSON.stringify(wordCopy) === JSON.stringify(engSentenceAns)) {
         setTrueWords(1);
@@ -70,7 +70,7 @@ const SentenceWrite = () => {
   const [vibeState, setVibeState] = useState(false);
   //파란 정답처리
   const [blueDes, setBlueDes] = useState(false);
-  //단어 배열 상태에 따라 정답처리 및 오답처리
+  //단어 배열 상태에 따 정답처리 및 오답처리
   useEffect(() => {
     if (tureWords === 0) {
       return;
@@ -116,9 +116,38 @@ const SentenceWrite = () => {
     return <div className={`unselected ` + pop}>{engFullSentence}</div>;
   };
 
+  // 화살표 버튼 클릭 핸들러 추가
+  const fetchNewSentence = () => {
+    setSuccess(false);
+    setWord([]);
+    setSelected(selCopy);
+    setTrueWords(0);
+
+    axios
+      .get('/api/sentences')
+      .then((res) => {
+        let sentences = res.data;
+        if (!sentences) {
+          console.log('데이터 없음');
+          return;
+        }
+        setKorSentence(sentences.kor);
+        setEngSentence(sentences.eng);
+        setEngSentenceAns(sentences.engAnswer);
+
+        let falseArr = sentences.eng.map(() => false);
+        setSelected(falseArr);
+        setSelCopy(falseArr);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <div className='write-background'>
       <div className='question-background'>
+        <div className='question-title'>코스제목이에요 1/10</div>
         <div className='question-homeButton'>
           <svg
             xmlns='http://www.w3.org/2000/svg'
@@ -135,6 +164,7 @@ const SentenceWrite = () => {
         </div>
         <div className='question-arrowButtons'>
           <svg
+            onClick={fetchNewSentence}
             xmlns='http://www.w3.org/2000/svg'
             width='28'
             height='28'
@@ -156,6 +186,7 @@ const SentenceWrite = () => {
             />
           </svg>
           <svg
+            onClick={fetchNewSentence}
             xmlns='http://www.w3.org/2000/svg'
             width='28'
             height='28'

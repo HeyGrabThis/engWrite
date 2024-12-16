@@ -6,19 +6,28 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgb(228, 235, 255);
+  background-color: #f8f9fd;
 }
 .question-background {
-  width: 94vw;
-  height: 90vh;
-  background-color: rgb(248, 248, 248);
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  width: 80vw;
+  height: 85vh;
+  background-color: white;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   position: relative;
-  border-radius: 10px;
+  border-radius: 20px;
+}
+.question-title {
+  position: absolute;
+  top: 4vh;
+  left: 3vw;
+  font-size: 1.8vh;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 500;
+  color: #666;
 }
 .question-arrowButtons {
   display: flex;
@@ -56,40 +65,38 @@
 
 .question-sentence {
   position: relative;
-  bottom: 25vh;
+  bottom: 22vh;
 }
 .question-sentenceKor {
   font-family: 'Noto Sans KR', sans-serif;
-  font-weight: 500;
-  font-optical-sizing: auto;
-  font-size: 4vh;
+  font-weight: 600;
+  font-size: 3.5vh;
+  color: #2c3e50;
 }
 .answer-sentencePart {
   position: relative;
-  bottom: 10vh;
+  bottom: 8vh;
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 }
 .answer-sentence {
   position: relative;
   display: flex;
   flex-direction: row;
+  justify-content: center;
 }
 .answer-sentenceWord {
-  width: 5vw;
-  height: 3vh;
-  border-bottom: 2px solid black;
-  margin-left: 0.5vw;
-  margin-right: 0.5vw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  width: 4.5vw;
+  height: 3.5vh;
+  border-bottom: 2px solid #e0e6ed;
+  margin: 0 0.8vw;
   font-family: 'Anek Devanagari', sans-serif;
-  font-optical-sizing: auto;
   font-weight: 500;
-  text-size-adjust: inherit;
-  font-size: 3vh;
+  font-size: 2.8vh;
+  color: #3498db;
+  transition: border-bottom-color 0.3s;
 }
 .answer-sentenceWord.vibration {
   animation: vibration 0.1s infinite;
@@ -105,80 +112,118 @@
 }
 .choice-sentence {
   position: absolute;
-  top: 52vh;
+  top: 55vh;
+  width: 60vw;
+  height: 20vh;
+  background-color: #f8f9fd;
+  border-radius: 15px;
+  padding: 2vh;
   display: flex;
-  flex-direction: row;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  background-color: white;
-  height: 25vh;
-  width: 50vw;
-  border-radius: 10px;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.2);
+  gap: 1vh;
 }
 .choice-sentenceWord {
-  border-radius: 5px;
+  padding: 1vh 1.5vw;
+  border-radius: 8px;
   font-family: 'Anek Devanagari', sans-serif;
-  font-optical-sizing: auto;
   font-weight: 500;
-  font-size: 3vh;
-  height: 4.2vh;
-  padding-left: 0.6vw;
-  padding-right: 0.6vw;
-  margin-left: 0.3vw;
-  margin-right: 0.3vw;
-  background-color: rgb(241, 244, 251);
-  color: rgb(75, 82, 103);
+  font-size: 2.8vh;
+  background-color: white;
+  color: #34495e;
+  border: 1px solid #edf2f7;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: all 0.2s ease;
 }
 .choice-sentenceWord:hover {
-  background-color: rgb(230, 234, 248);
-  color: rgb(86, 99, 134);
+  background-color: #f1f5f9;
+  transform: translateY(-2px);
 }
-/* 단어 한번 클릭했을 때 적용할 스타일 */
 .choice-sentenceWord.active {
-  background-color: rgb(27, 76, 255);
-  color: rgb(242, 246, 255);
+  background-color: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
 }
 /* 삭제 버튼 */
 .delBtn {
+  margin-top: 2vh;
+  width: 5vw;
+  padding: 0.8vh 1.2vw;
+  background-color: #f8f9fd;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.15s ease;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative;
-  bottom: -3vh;
-  width: 2vw;
-  background-color: white;
-  padding: 0.4vh 0.6vw;
-  border-radius: 7px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1), 0 1px 4px rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-  transition: box-shadow 0.1s, margin-top 0.1s, margin-bottom 0.1s,
-    background-color 0.3s;
 }
+
 .delBtn:hover {
-  background-color: rgb(230, 237, 253);
+  background-color: #edf2f7;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
 }
+
 .delBtn:active {
-  box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1), 0 1px 4px rgba(0, 0, 0, 0.2);
-  margin-top: 2px;
-  margin-bottom: -2px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  transform: translateY(0);
+  background-color: #e2e8f0;
+}
+
+/* SVG 아이콘 색상도 수정 */
+.delBtn svg path {
+  fill: #4a5568;
+}
+
+.delBtn:hover svg path {
+  fill: #2d3748;
 }
 /* 성공 컴포넌트 */
 .unselected {
-  transform: scale(0);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.5s ease;
 }
+
 .successSen {
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 5px;
+  padding: 1.5vh 2.5vw;
+  border-radius: 12px;
+  background-color: #f0f9ff;
+  border: 1px solid #bae6fd;
   font-family: 'Anek Devanagari', sans-serif;
-  font-optical-sizing: auto;
   font-weight: 500;
   font-size: 3vh;
-  color: rgb(0, 0, 170);
-  transform: scale(100%);
-  transition: 0.3s;
+  color: #0369a1;
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* 애니메이션 효과 추가 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.successSen {
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+/* 정답 텍스트에 그라데이션 효과 추가 */
+.successSen {
+  background: linear-gradient(120deg, #f0f9ff 0%, #e0f2fe 100%);
 }
